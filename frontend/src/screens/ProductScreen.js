@@ -84,7 +84,7 @@ history.push(`/cart/${match.params.id}?qty=${qty}`)
                   <ListGroup.Item>
                     <Row>
                       <Col>Qty</Col>
-                      <Col>
+                      <Col fluid>
                         <Form.Control
                           as='select'
                           value={qty}
