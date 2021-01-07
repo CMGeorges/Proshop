@@ -106,6 +106,7 @@ export const register = (name, email, password) => async (dispatch) => {
     })
   }
 }
+
 export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
