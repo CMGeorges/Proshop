@@ -12,7 +12,7 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from './reducers/userReducers'
-import {orderCreateReducer} from './reducers/orderReducers'
+import { getMyOrdersReducer, orderCreateReducer,orderDetailsReducer,orderPayReducer} from './reducers/orderReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -23,6 +23,9 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate:orderCreateReducer,
+  orderDetails:orderDetailsReducer,
+  orderPay:orderPayReducer,
+  myOrders:getMyOrdersReducer,
 })
 
 //this right here  we set  the localStorage  for cart
