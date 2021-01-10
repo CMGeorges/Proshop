@@ -4,6 +4,9 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {
   productListReducer,
   productDetailsReducer,
+  productDeleteReducer,
+  productCreateReducer,
+  productUpdateReducer,
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
 import {
@@ -16,8 +19,10 @@ import {
   userUpdateProfileReducer,
 } from './reducers/userReducers'
 import {
+  getAllOrdersReducer,
   getMyOrdersReducer,
   orderCreateReducer,
+  orderDeliveredReducer,
   orderDetailsReducer,
   orderPayReducer,
 } from './reducers/orderReducers'
@@ -25,6 +30,9 @@ import {
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -37,6 +45,8 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   myOrders: getMyOrdersReducer,
+  ordersAll: getAllOrdersReducer,
+  orderDelivered: orderDeliveredReducer,
 })
 
 //this right here  we set  the localStorage  for cart
