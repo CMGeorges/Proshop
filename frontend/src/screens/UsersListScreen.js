@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {listUsers} from '../actions/userActions'
+import {listUsers,deleteUser} from '../actions/userActions'
 
 
 
@@ -20,6 +20,9 @@ const {loading,error,users} = userList
 const userLogin = useSelector(state=>state.userLogin)
 const {userInfo} = userLogin
 
+const userDelete = useSelector(state=>state.userDelete)
+const {success:successDelete} = userDelete
+
 
 useEffect(()=>{
 
@@ -30,11 +33,14 @@ if (userInfo && userInfo.isAdmin) {
     history.push('/login')
 }
 
-},[dispatch,history,userInfo])
+},[dispatch,history,userInfo,successDelete])
 
 
-const deleteHandler = ()=>{
-    console.log('deleted');
+const deleteHandler = (id)=>{
+    if (window.confirm('Are you sure ?')) {
+        
+        dispatch(deleteUser(id))
+    }
     
 }
 
@@ -64,7 +70,7 @@ const deleteHandler = ()=>{
                                     <i className='fas fa-times' style={{color:'red'}}></i>
                                 )}</td>
                                 <td>
-                                    <LinkContainer to={`/user/${user._id}/edit`}>
+                                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
                                         <Button variant='light' className='btn-sm'>
                                             <i className='fas fa-edit'></i>
                                         </Button>
