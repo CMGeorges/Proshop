@@ -1,35 +1,44 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
-import Product from '../components/Product'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { listProducts } from '../actions/productsActions'
-import Paginate from '../components/Paginate'
-import ProductCarrousselle from '../components/ProductCarrousselle'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Product from "../components/Product";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { listProducts } from "../actions/productsActions";
+import Paginate from "../components/Paginate";
+import ProductCarrousselle from "../components/ProductCarrousselle";
+import Meta from "../components/Meta";
 
 const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword
+  const keyword = match.params.keyword;
 
-  const pageNumber = match.params.pageNumber || 1
+  const pageNumber = match.params.pageNumber || 1;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, products, error, page, pages } = productList
+  const productList = useSelector((state) => state.productList);
+  const { loading, products, error, page, pages } = productList;
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber))
-  }, [dispatch, keyword, pageNumber])
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   return (
     <>
-    {!keyword && <ProductCarrousselle />}
+      <Meta />
+      {!keyword ? (
+        <ProductCarrousselle />
+      ) : (
+        <Link to="/" className="btn btn-dark">
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <Row>
@@ -42,12 +51,12 @@ const HomeScreen = ({ match }) => {
           <Paginate
             pages={pages}
             page={page}
-            keyword={keyword ? keyword : ''}
+            keyword={keyword ? keyword : ""}
           />
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;

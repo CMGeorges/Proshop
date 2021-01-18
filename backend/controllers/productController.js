@@ -8,7 +8,7 @@ import Product from "../models/productModel.js";
  */
 const getProducts = AsyncHandler(async (req, res) => {
   //the amount of item that can be show in the page
-  const pageSize = 10;
+  const pageSize = 2;
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
@@ -23,7 +23,7 @@ const getProducts = AsyncHandler(async (req, res) => {
   const count = await Product.countDocuments({ ...keyword });
   const products = await Product.find({ ...keyword })
     .limit(pageSize)
-    .skip(pageSize - (page - 1));
+    .skip(pageSize * (page - 1));
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });

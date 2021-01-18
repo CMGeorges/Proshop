@@ -1,104 +1,106 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col, Table } from 'react-bootstrap'
-import {LinkContainer} from 'react-router-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { getUserDetails, getUpdateUserProfile } from '../actions/userActions'
-import { listMyOrders } from '../actions/orderActions'
+import React, { useState, useEffect } from "react";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { getUserDetails, getUpdateUserProfile } from "../actions/userActions";
+import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfileScreen = ({ history }) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState(null)
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState(null);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading, error, user } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success } = userUpdateProfile
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
 
-  const myOrders = useSelector((state) => state.myOrders)
-  const { loading: loadingOrders, error: errorOrders, orders } = myOrders
+  const myOrders = useSelector((state) => state.myOrders);
+  const { loading: loadingOrders, error: errorOrders, orders } = myOrders;
 
   useEffect(() => {
     if (!userInfo) {
-      history.push('/login')
-    } else if (loading || !user.name) {
+      history.push("/login");
+    } else if (!user || !user.name || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
       //fix the user undifed
-      dispatch(getUserDetails('profile'))
-      dispatch(listMyOrders())
+      dispatch(getUserDetails("profile"));
+      dispatch(listMyOrders());
     } else if (user.name) {
-      setName(user.name)
-      setEmail(user.email)
+      setName(user.name);
+      setEmail(user.email);
     }
-  }, [history, userInfo, dispatch, user, loading])
+  }, [history, userInfo, dispatch, user, success]);
 
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     //DISPATCH REGISTER
 
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match')
+      setMessage("Passwords do not match");
     } else {
-      dispatch(getUpdateUserProfile({ id: user._id, name, email, password }))
+      dispatch(getUpdateUserProfile({ id: user._id, name, email, password }));
     }
     //DISPATCH UPDATE PROFILE
-  }
+  };
 
   return (
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
-        {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
-        {success && <Message variant='success'>Profile Updated!</Message>}
+        {message && <Message variant="danger">{message}</Message>}
+        {error && <Message variant="danger">{error}</Message>}
+        {success && <Message variant="success">Profile Updated!</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='name'>
+          <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control
-              type='name'
-              placeholder='Enter name'
+              type="name"
+              placeholder="Enter name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Form.Group controlId='email'>
+          <Form.Group controlId="email">
             <Form.Label>Email Address</Form.Label>
             <Form.Control
-              type='email'
-              placeholder='Enter email'
+              type="email"
+              placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Form.Group controlId='password'>
+          <Form.Group controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
-              type='password'
-              placeholder='Enter password'
+              type="password"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Form.Group controlId='confirmPassword'>
+          <Form.Group controlId="confirmPassword">
             <Form.Label>confirmPassword</Form.Label>
             <Form.Control
-              type='password'
-              placeholder='Enter confirmPassword'
+              type="password"
+              placeholder="Enter confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Button type='submit' variant='primary'>
+          <Button type="submit" variant="primary">
             Update
           </Button>
         </Form>
@@ -108,9 +110,9 @@ const ProfileScreen = ({ history }) => {
         {loadingOrders ? (
           <Loader />
         ) : errorOrders ? (
-          <Message variant='danger'>{errorOrders}</Message>
+          <Message variant="danger">{errorOrders}</Message>
         ) : (
-          <Table striped bordered hover responsive className='table-sm'>
+          <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
                 <th>ID</th>
@@ -131,19 +133,21 @@ const ProfileScreen = ({ history }) => {
                     {order.isPaid ? (
                       order.paidAt.substring(0, 10)
                     ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
                       order.deliveredAt.substring(0, 10)
                     ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
                   <td>
                     <LinkContainer to={`/order/${order._id}`}>
-                      <Button className='btn-sm' variant='light'>Details</Button>
+                      <Button className="btn-sm" variant="light">
+                        Details
+                      </Button>
                     </LinkContainer>
                   </td>
                 </tr>
@@ -153,7 +157,7 @@ const ProfileScreen = ({ history }) => {
         )}
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;
