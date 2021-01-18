@@ -75,7 +75,6 @@ const OrdersListScreen = ({history}) => {
                   ):(
                       <i className='fas fa-times' style={{color:'red'}}></i>
                   )}</td>
-                  <td>{order.brand}</td>
                   <td>
                     <LinkContainer to={`/order/${order._id}`}>
                       <Button variant='light' className='btn-sm'>
