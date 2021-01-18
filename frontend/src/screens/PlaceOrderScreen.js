@@ -19,7 +19,7 @@ const PlaceOrderScreen = ({ history }) => {
   cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 100).toFixed(2)
   cart.taxPrice = Number((0.15 * cart.itemsPrice).toFixed(2)).toFixed(2)
   cart.totalPrice =
-    Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
+    (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 
   /**round on 2 digit */
   // const addDecimals = (num) => {
@@ -95,7 +95,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
