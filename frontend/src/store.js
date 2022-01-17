@@ -1,6 +1,6 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 import {
   productListReducer,
   productDetailsReducer,
@@ -9,8 +9,8 @@ import {
   productUpdateReducer,
   productReviewCreateReducer,
   productTopRatedReducer,
-} from './reducers/productReducers'
-import { cartReducer } from './reducers/cartReducers'
+} from "./reducers/productReducers";
+import { cartReducer } from "./reducers/cartReducers";
 import {
   deleteUserReducer,
   listUsersReducer,
@@ -19,7 +19,7 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
-} from './reducers/userReducers'
+} from "./reducers/userReducers";
 import {
   getAllOrdersReducer,
   getMyOrdersReducer,
@@ -27,7 +27,7 @@ import {
   orderDeliveredReducer,
   orderDetailsReducer,
   orderPayReducer,
-} from './reducers/orderReducers'
+} from "./reducers/orderReducers";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -42,31 +42,31 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
-  userList:listUsersReducer,
-  userDelete:deleteUserReducer,
-  userUpdate:updateUserReducer,
+  userList: listUsersReducer,
+  userDelete: deleteUserReducer,
+  userUpdate: updateUserReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   myOrders: getMyOrdersReducer,
   ordersAll: getAllOrdersReducer,
   orderDelivered: orderDeliveredReducer,
-})
+});
 
 //this right here  we set  the localStorage  for cart
-const cartItemsFromStorage = localStorage.getItem('cartItems')
-  ? JSON.parse(localStorage.getItem('cartItems'))
-  : [] //if no items a empty array .
+const cartItemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : []; //if no items a empty array .
 
 //this right here  we set  the localStorage for user info
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null //if no items a empty object .
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null; //if no items a empty object .
 
 //this right here  we set  the localStorage for shippingAddress
-const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
-  ? JSON.parse(localStorage.getItem('shippingAddress'))
-  : {} //if no items a empty object .
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {}; //if no items a empty object .
 
 const initialState = {
   cart: {
@@ -74,14 +74,14 @@ const initialState = {
     shippingAddress: shippingAddressFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
-} //set the state of the de localStorage
+}; //set the state of the de localStorage
 
-const middleware = [thunk]
+const middleware = [thunk];
 
 const store = createStore(
   reducer,
   initialState,
   composeWithDevTools(applyMiddleware(...middleware))
-)
+);
 
-export default store
+export default store;
