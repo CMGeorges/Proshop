@@ -1,12 +1,14 @@
 {
   "name": "proshop",
-  "version": "1.0.2","engines": {
-    "node": "14.x",
+  "version": "1.0.2",
+  "engines": {
+    "node": "16.x",
     "yarn": "1.x"
   },
   "description": "MERN shooping cart app",
   "main": "server.js",
   "type": "module",
+  "homepage": "http://cmgeorges.github.io/proshop",
   "scripts": {
     "start": "node backend/server",
     "server": "nodemon backend/server",
@@ -14,7 +16,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "heroku-postbuild": "YARN_PRODUCTION=false yarn install --only=dev --prefix frontend && npm run  build --prefix frontend"
+    "heroku-postbuild": "YARN_PRODUCTION=false yarn install --only=dev --prefix frontend && npm run  build --prefix frontend",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "CMGeorges",
   "license": "MIT",
@@ -31,9 +35,10 @@
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
+    "gh-pages": "^3.2.3",
     "nodemon": "^2.0.7"
   },
   "resolutions": {
-   "mini-css-extract-plugin": "2.4.5"
- }
+    "mini-css-extract-plugin": "2.4.5"
+  }
 }
