@@ -31,5 +31,8 @@
   "devDependencies": {
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.7"
-  }
+  },
+  "resolutions": {
+   "mini-css-extract-plugin": "2.4.5"
+ }
 }
