@@ -1,7 +1,8 @@
 {
   "name": "proshop",
   "version": "1.0.2","engines": {
-    "node": "14.x"
+    "node": "14.x",
+    "yarn": "1.x"
   },
   "description": "MERN shooping cart app",
   "main": "server.js",
@@ -13,7 +14,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix frontend && yarn run build --prefix frontend"
   },
   "author": "CMGeorges",
   "license": "MIT",
