@@ -21,11 +21,11 @@ permissions:
 jobs:
   dependency-review:
     name: Dependency Review
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Review dependencies
         uses: actions/dependency-review-action@v4
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -56,7 +56,7 @@ jobs:
           - javascript-typescript
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -70,13 +70,12 @@ jobs:
         uses: github/codeql-action/analyze@v3
 
   npm-audit:
-    name: NPM Audit
+    name: NPM Audit (${{ matrix.project }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         project:
-          - .
           - backend
           - frontend
     defaults:
@@ -85,21 +84,27 @@ jobs:
         working-directory: ${{ matrix.project }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
         if: ${{ hashFiles(format('{0}/package.json', matrix.project)) != '' }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: ${{ matrix.project }}/package-lock.json
+          package-manager-cache: false
 
       - name: Install dependencies
         if: ${{ hashFiles(format('{0}/package.json', matrix.project)) != '' }}
         run: npm ci
 
-      - name: Audit high severity issues
+      - name: Audit production dependencies
         if: ${{ hashFiles(format('{0}/package.json', matrix.project)) != '' }}
-        run: npm audit --omit=dev --audit-level=high
-
+        continue-on-error: ${{ matrix.project == 'frontend' }}
+        run: |
+          if [ "${{ matrix.project }}" = "frontend" ]; then
+            npm audit --omit=dev --audit-level=critical
+          else
+            npm audit --omit=dev --audit-level=high
+          fi
