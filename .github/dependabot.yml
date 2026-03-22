@@ -4,34 +4,106 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "security"
+    groups:
+      backend-runtime:
+        patterns:
+          - "bcryptjs"
+          - "concurrently"
+          - "dotenv"
+          - "express"
+          - "express-async-handler"
+          - "jsonwebtoken"
+          - "mongoose"
+          - "multer"
+          - "nodemon"
+    ignore:
+      - dependency-name: "express"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "mongoose"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "dotenv"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "bcryptjs"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "security"
+    groups:
+      backend-runtime:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "express"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "mongoose"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "dotenv"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "bcryptjs"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "security"
+    groups:
+      frontend-runtime:
+        patterns:
+          - "axios"
+          - "react"
+          - "react-dom"
+          - "react-bootstrap"
+          - "react-redux"
+          - "react-router-bootstrap"
+          - "redux"
+          - "redux-thunk"
+          - "web-vitals"
+      frontend-test-and-types:
+        patterns:
+          - "@testing-library/*"
+          - "@types/*"
+    ignore:
+      - dependency-name: "react-scripts"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react-dom"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "security"
-
+    groups:
+      github-actions:
+        patterns:
+          - "*"
